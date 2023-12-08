@@ -27,7 +27,7 @@ button {
 }
 button:nth-last-child(2),
 button:nth-last-child(1) {
-  background: tomato;
+  background: rgb(72, 101, 103);
   color: white;
 }
 
