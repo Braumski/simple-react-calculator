@@ -5,15 +5,26 @@ function App() {
   const inputRef = useRef(null); 
   const resultRef = useRef(null);
   const [result, setResult] = useState(0); 
+
+  const handleKeyDown = (e) => {
+    const key = e.key || String.fromCharCode(e.keyCode)
+    console.log(`Key pressed: ${key}`);
+    switch (key) {
+      case "=":
+        resetResult();
+        break;
+    }
+  }
  
   const helperFunc = (paramFunc) => (e) =>{
     /* Refactored parent function that will prevent the default button action */
-
     e.preventDefault();
-    paramFunc(e);
+    paramFunc();
+    inputRef.current.focus();
+    inputRef.current.select();
   }
 
-  function plus() { 
+  function plus() {
     setResult((result) => result + Number(inputRef.current.value))
   }
  
@@ -31,16 +42,20 @@ function App() {
  
   function resetResult() { 
     setResult(0)
-    inputRef.current.value = null;
+    inputRef.current.value = '';
   } 
+
+
  
   return ( 
     <div className="App"> 
       <div> 
         <h1>Simplest Working Calculator</h1> 
       </div> 
-      <form> 
-        <p ref={resultRef}> 
+      <form onKeyDown={handleKeyDown}> 
+        <p 
+        ref={resultRef}
+        > 
           {result} 
         </p> 
         <input
@@ -49,12 +64,14 @@ function App() {
           type="number" 
           placeholder="Type a number" 
         /> 
+        <p>Use = to clear</p>
         <button onClick={helperFunc(plus)}>add</button> 
         <button onClick={helperFunc(minus)}>subtract</button> 
         <button onClick={helperFunc(times)}>multiply</button> 
         <button onClick={helperFunc(divide)}>divide</button> 
         <button onClick={helperFunc(resetResult)}>clear</button> 
-      </form> 
+      </form>
+      
     </div> 
   ); 
 } 
