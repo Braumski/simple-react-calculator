@@ -1,36 +1,37 @@
 import { useState, useRef } from 'react'
-import './App.css'
+import './index.css'
 
 function App() { 
   const inputRef = useRef(null); 
-  const resultRef = useRef(null); 
+  const resultRef = useRef(null);
   const [result, setResult] = useState(0); 
  
-  function plus(e) { 
-    e.preventDefault(); 
-    setResult((result) => result + Number(inputRef.current.value))
+  const helperFunc = (paramFunc) => (e) =>{
+    /* Refactored parent function that will prevent the default button action */
 
-  }
- 
-  function minus(e) { 
     e.preventDefault();
-    setResult((result => result - Number(inputRef.current.value)))
+    paramFunc(e);
+  }
+
+  function plus() { 
+    setResult((result) => result + Number(inputRef.current.value))
   }
  
-  function times(e) { 
-    e.preventDefault(); 
+  function minus() { 
+    setResult((result) => result - Number(inputRef.current.value))
+  }
+ 
+  function times() { 
+    setResult(result => result * Number(inputRef.current.value))
   } 
  
-  function divide(e) { 
-    e.preventDefault();
+  function divide() { 
+    setResult(result => result / Number(inputRef.current.value))
   }
  
-  function resetInput(e) { 
-    e.preventDefault();
-  } 
- 
-  function resetResult(e) { 
-    e.preventDefault();
+  function resetResult() { 
+    setResult(0)
+    inputRef.current.value = null;
   } 
  
   return ( 
@@ -48,12 +49,11 @@ function App() {
           type="number" 
           placeholder="Type a number" 
         /> 
-        <button onClick={plus}>add</button> 
-        <button onClick={minus}>subtract</button> 
-        {/* Add the multiply button */} 
-        {/* Add the divide button */} 
-        {/* Add the resetInput button */} 
-        {/* Add the resetResult button */} 
+        <button onClick={helperFunc(plus)}>add</button> 
+        <button onClick={helperFunc(minus)}>subtract</button> 
+        <button onClick={helperFunc(times)}>multiply</button> 
+        <button onClick={helperFunc(divide)}>divide</button> 
+        <button onClick={helperFunc(resetResult)}>clear</button> 
       </form> 
     </div> 
   ); 
